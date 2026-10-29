@@ -51,6 +51,7 @@ jobs:
       - uses: Swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
         with:
           workspaces: src-tauri -> target
+          cache-on-failure: true
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
@@ -113,7 +114,17 @@ jobs:
       - name: Verify macOS application signature
         if: runner.os == 'macOS'
         shell: bash
-        run: codesign --verify --deep --strict src-tauri/target/aarch64-apple-darwin/release/bundle/macos/MusicDecode.app
+        run: |
+          set -euo pipefail
+          images=(src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg)
+          test -f "${images[0]}"
+          mountpoint="$RUNNER_TEMP/musicdecode-signature-check"
+          mkdir -p "$mountpoint"
+          hdiutil attach "${images[0]}" -readonly -nobrowse -mountpoint "$mountpoint"
+          trap 'hdiutil detach "$mountpoint" -quiet' EXIT
+          codesign --verify --deep --strict --verbose=2 "$mountpoint/MusicDecode.app"
+          file "$mountpoint/MusicDecode.app/Contents/MacOS/MusicDecode" | grep arm64
+          "$mountpoint/MusicDecode.app/Contents/MacOS/musicdecode-ffmpeg" -version
       - name: Collect installers, source archives and checksums
         run: node scripts/collect-artifacts.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
