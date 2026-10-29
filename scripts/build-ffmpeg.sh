@@ -25,7 +25,7 @@ make -j"$JOBS"
 make install
 
 cd "$WORK/ffmpeg"
-EXTRA=()
+EXTRA=(--extra-version=MusicDecode)
 if [[ "$TARGET" == x86_64-pc-windows-msvc ]]; then
   EXTRA+=(--target-os=mingw32 --arch=x86_64 --cc=gcc --cxx=g++ "--extra-ldflags=-L$PREFIX/lib -static -static-libgcc")
 fi

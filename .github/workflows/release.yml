@@ -69,16 +69,34 @@ jobs:
             diffutils
       - run: npm ci
       - run: npm run check:version
+      - name: Restore compiled audio component
+        id: audio-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            src-tauri/binaries
+            third-party/generated
+            work/sources
+          key: audio-v1-${{ matrix.target }}-${{ hashFiles('third-party/sources.json', 'scripts/build-ffmpeg.sh') }}
       - name: Download and verify audio sources
         run: npm run audio:sources
       - name: Build Windows audio sidecar
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && steps.audio-cache.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: bash scripts/build-ffmpeg.sh
       - name: Build macOS / Linux audio sidecar
-        if: runner.os != 'Windows'
+        if: runner.os != 'Windows' && steps.audio-cache.outputs.cache-hit != 'true'
         shell: bash
         run: bash scripts/build-ffmpeg.sh
+      - name: Cache verified audio component
+        if: steps.audio-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            src-tauri/binaries
+            third-party/generated
+            work/sources
+          key: audio-v1-${{ matrix.target }}-${{ hashFiles('third-party/sources.json', 'scripts/build-ffmpeg.sh') }}
       - name: Resolve locked Rust dependencies
         run: cargo fetch --locked --manifest-path src-tauri/Cargo.toml
       - name: Generate license notices
