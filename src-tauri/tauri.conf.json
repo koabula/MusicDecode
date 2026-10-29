@@ -1,0 +1,77 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MusicDecode",
+  "version": "1.1.0",
+  "identifier": "io.github.koabula.musicdecode",
+  "mainBinaryName": "MusicDecode",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "MusicDecode",
+        "width": 1060,
+        "height": 800,
+        "minWidth": 820,
+        "minHeight": 700,
+        "center": true,
+        "backgroundColor": "#e9edf0",
+        "dragDropEnabled": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost; object-src 'none'; base-uri 'self'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "externalBin": [
+      "binaries/musicdecode-ffmpeg"
+    ],
+    "resources": {
+      "../third-party/generated/": "licenses/audio/",
+      "../THIRD-PARTY-NOTICES.txt": "THIRD-PARTY-NOTICES.txt",
+      "../LICENSE": "LICENSE"
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Music",
+    "shortDescription": "Offline NCM to MP3 decoder",
+    "longDescription": "A simple local music decoder with a soft neumorphic interface. Batch-decode NCM files to MP3 while retaining embedded metadata and artwork.",
+    "copyright": "Copyright (c) 2026 MusicDecode contributors",
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "English",
+          "SimpChinese"
+        ],
+        "displayLanguageSelector": true
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "signingIdentity": "-"
+    },
+    "linux": {
+      "deb": {
+        "depends": [
+          "libwebkit2gtk-4.1-0",
+          "libgtk-3-0",
+          "xdg-utils"
+        ]
+      }
+    }
+  }
+}

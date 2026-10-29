@@ -1,0 +1,32 @@
+{
+  "name": "musicdecode",
+  "private": true,
+  "version": "1.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "tauri": "tauri",
+    "desktop": "tauri dev",
+    "build:desktop": "tauri build",
+    "package": "tauri build",
+    "audio:sources": "node scripts/download-sources.mjs",
+    "audio:build": "bash scripts/build-ffmpeg.sh",
+    "check:version": "node scripts/check-version.mjs",
+    "package:portable": "node scripts/package.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "typescript": "^5",
+    "vite": "^7"
+  },
+  "description": "Offline NCM to MP3 decoder for Windows, macOS Apple Silicon and Linux",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koabula/MusicDecode.git"
+  },
+  "license": "MIT"
+}

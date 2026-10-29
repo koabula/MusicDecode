@@ -1,0 +1,16 @@
+{
+  "ffmpeg": {
+    "version": "9.0.2",
+    "url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/refs/tags/n9.0.2",
+    "sha256": "6e374ed621e48faa40639307dff48ba6fe574a509977956d2cce9669b7cc27e9",
+    "filename": "ffmpeg.tar.gz",
+    "license": "LGPL-2.1-or-later (GPL and nonfree components disabled)"
+  },
+  "lame": {
+    "version": "3.100",
+    "url": "https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz",
+    "sha256": "ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e",
+    "filename": "lame.tar.gz",
+    "license": "LGPL-2.0-or-later"
+  }
+}
